@@ -3,9 +3,6 @@ class LinkedList:
         self.head = None
         self.tail = None
         self.size = 0
-    def addHead(self,data):
-        node = Node(data,self.head)
-        self.head = node
     @staticmethod
     def raiser(exception):
         raise Exception(exception)
@@ -67,7 +64,7 @@ class LinkedList:
             raise Exception('No tail to delete')
         node = self.head
         tail = self.tail
-        for i in range(self.size -1):
+        for _ in range(self.size -1):
             node = node.next
         node.next = None
         del tail
