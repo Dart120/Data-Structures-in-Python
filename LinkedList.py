@@ -1,80 +1,181 @@
+class Node:
+    def __init__(self,data,nuxt):
+        self.next = nuxt
+        self.data = data
 class LinkedList:
     def __init__(self):
         self.head = None
-        self.tail = None
-        self.size = 0
-    @staticmethod
-    def raiser(exception):
-        raise Exception(exception)
-    def insertAtHead(self,data):
-        node = Node(data,self.head)
-        self.head = node
-        if self.size == 0:
-            self.tail = node
-        self.size += 1
-    def insertAtTail(self,data):
-        if self.size == 0:
-            self.insertAtHead(data)
-            
+        self.length = 0
+    def isEmpty(self):
+        return self.head == None
+    def size(self):
+        return self.length
+    def sizeI(self):
+        node = self.head
+        counter = 1
+        if node == None:
+            return 0
         else:
-            node = self.tail
-            node.next = Node(data,None)
-            self.size += 1
-            
-    def delHead(self):
-        if self.size > 0:
-            
-            node = self.head
-            self.head = node.next
-            del node
-            self.size -= 1
-        else:
-            raise Exception('No head to delete')
-    def insertAtIndex(self,index,data):
-        if index > self.size -1:
-            raise Exception('Index out of range')
-        if index == 0:
-            self.insertAtHead(data)
-        else:
-            node = self.head
-            node2 = self.head
-            for _ in range(index):
+            while node.next != None:
                 node = node.next
-            for _ in range(index-1):
-                node2 = node2.next
-            node3 = Node(data,node)
-            node2.next = node3
-            self.size += 1
-    def findAtIndex(self,index,data):
-        if index > self.size - 1:
-            raise Exception('Index out of range')
+                counter += 1
+        return counter
+    def valueAt(self, index):
+        if index > self.size()-1 or index < 0:
+            return 'out of range'
         node = self.head
-        for _ in range(index):
-            node = node.next
-        return node.data
-    def find(self,data):
-        node = self.head
-        found = True if node.data == data else False
-        for _ in range(self.size):
-            node = node.next
-            found = True if node.data == data else False  
-        return found
-    def removeAtTail(self):
-        if self.size == 0:
-            raise Exception('No tail to delete')
-        node = self.head
-        tail = self.tail
-        for _ in range(self.size -1):
-            node = node.next
-        node.next = None
-        del tail
-        self.tail = node
-        self.size -= 1
+        while index != 0:
             
-class Node:
-    def __init__(self,data,node):
-        self.data = data
-        self.next = node
-thing = LinkedList()
-thing.insertAtHead(0)
-thing.removeAtTail()
+            node = node.next
+            index-= 1
+        return node.data
+    def push_front(self, value):
+        node = self.head
+        newHead = Node(value,node)
+        self.head = newHead
+        self.length += 1
+    def pop_front(self):
+        if self.isEmpty():
+            return 'nothing to delete'
+        node = self.head
+        newHead = self.head.next
+        self.head = newHead
+        value = node.data
+        del node
+        self.length -= 1
+        return value
+    def push_back(self,value):
+        node = self.head
+        newTail = Node(value,None)
+        if self.isEmpty():
+            self.head = newTail
+        else:
+            counter = self.length - 1
+            while counter != 0:
+                node = node.next
+            node.next = newTail
+        self.length += 1
+    def __str__(self):
+        node = self.head
+        ll = ''
+        while node != None:
+            ll += str(node.data) + '-->'
+            node = node.next
+        end = 'Null'
+        return ll + end
+    def pop_back(self):
+        node = self.head
+        if self.isEmpty():
+            return 'nothing to delete'
+        elif node.next == None:
+            data = node.data
+            self.head = None
+            del node
+            self.length -= 1
+        else:
+            for i in range(self.length - 1):
+                node = node.next
+            tail = node
+            node = self.head
+            for i in range(self.length - 2):
+                node = node.next
+            pu = node
+            pu.next = None
+            data = tail.data
+            del tail
+            self.length -= 1 
+        return data
+    def front(self):
+        if self.isEmpty():
+            print('Nothing to show you')
+        else:
+            return self.head.data
+    def back(self):
+        node = self.head
+        if self.isEmpty():
+            print('Nothing to show you')
+        else:
+            for i in range(self.length - 1):
+                node = node.next
+            return node.data
+    def insert(self,index,value):
+        load = self.head
+        node = Node(value,None)
+        if index > self.length - 1:
+            print('index does not exist')
+        
+        elif index == 0:
+            node.next = self.head
+            self.head = node
+            self.length += 1
+        else:
+            for i in range(index - 1):
+                load = load.next
+            prev = load
+            load = self.head
+            for i in range(index):
+                load = load.next
+            nuxt = load
+            prev.next = node
+            node.next = nuxt
+            self.length += 1
+        print(self)
+    def erase(self,index):
+        load = self.head
+        if index > self.length - 1:
+            print('index does not exist')
+        
+        elif index == 0:
+            load.next = self.head
+            self.head = load.next
+            self.length += 1
+        else:
+            for i in range(index - 1):
+                load = load.next
+            prev = load
+            load = self.head
+            for i in range(index):
+                load = load.next
+            nuxt = load
+            prev.next = load
+            load.next = nuxt
+            self.length += 1
+        print(self)
+    def n_from_end(self,n):
+        return self.valueAt(self.length - n)
+    def reverse(self):
+        prev = None
+        current = self.head 
+        while current is not None: 
+            next = current.next
+            current.next = prev 
+            prev = current 
+            current = next
+        self.head = prev 
+
+            
+                
+        
+        
+        
+            
+        
+            
+        
+            
+        
+                
+List = LinkedList()
+
+
+
+List.push_front(4)
+List.push_front(4)
+List.push_front(4)
+List.push_front(2)
+List.push_front(4)
+print(List)
+List.reverse()
+print(List)
+
+        

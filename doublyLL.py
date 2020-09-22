@@ -3,6 +3,14 @@ class Double:
         self.head = None
         self.tail = None
         self.size = 0
+    def indexOf(self,data):
+        node = self.head
+        counter = self.size
+        while self.size != 0:
+            if node.data == data:
+                return self.size - counter
+            else:
+                counter -= 1
     def insertAtHead(self,data):
         
         if self.size == 0:
@@ -44,7 +52,21 @@ class Double:
         node.prev.next = newNode
         node.prev = newNode
         self.size += 1
-    def findAtIndex(self,index,data):
+    def removeAtIndex(self,index):
+        if index > self.size:
+            raise Exception('Index out of range')
+        node = self.head
+        for _ in range(index):
+            
+            node = node.next
+            
+        
+        
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        del node
+        self.size += 1
+    def findAtIndex(self,index):
         if index > self.size - 1:
             raise Exception('Index out of range')
         node = self.head
@@ -53,14 +75,29 @@ class Double:
         return node.data
     def find(self,data):
         node = self.head
-        found = True if node.data == data else False
-        for _ in range(self.size):
-            node = node.next
-            found = True if node.data == data else False  
-        return found
+        print(self.head.data)
+        counter = self.size
+        while self.size != 0:
+            if not(node == None):
+                if node.data == data:
+                    return True
+                else:
+                    counter -= 1
+                    node = node.next
+            else:
+                return False
+        
+        return False
     def removeAtTail(self):
         if self.size == 0:
             raise Exception('No tail to delete')
+        if self.size == 1:
+            tail = self.tail
+            del tail
+            self.tail = None
+            self.head = None
+            return
+            
         tail = self.tail
         self.tail = tail.prev
         
@@ -95,3 +132,25 @@ DLL.delHead()
 
 
 DLL.state()
+class Queue:
+    def __init__(self):
+        self.queue = Double()
+        self.length = self.queue.size
+        self.front = self.queue.head
+        self.back = self.queue.tail
+    def enqueue(self,data):
+        self.queue.insertAtHead(data)
+    def dequeue(self):
+        self.queue.removeAtTail()
+    def contains(self,data):
+        return self.queue.find(data)
+    def remove(self,data):
+        self.queue.removeAtIndex(self.queue.indexOf(data))
+queue = Queue()
+queue.enqueue(1)
+
+queue.dequeue()
+queue.dequeue()
+queue.dequeue()
+queue.queue.state()
+        
